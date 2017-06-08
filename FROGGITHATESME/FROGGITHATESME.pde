@@ -28,10 +28,10 @@ if(y == 20){
   text("You win", 200, 200);
   textSize(24);
 }
- if(y == 390){
+ if(y == 400){
  y = 380 ;
 }
-if(y == 10){
+if(y == 0){
  y = 20; 
 }
 if(x == 10){
@@ -46,7 +46,7 @@ void keyPressed()
   if(key == CODED){
       if(keyCode == UP)
       {
-y = y - 10;
+y = y - 20;
       }
       else if(keyCode == DOWN)
       {
