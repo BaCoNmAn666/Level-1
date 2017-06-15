@@ -11,12 +11,12 @@ public class GameObject {
 	this.width = width;
 	this.height = height;
 }
-
+boolean isAlive = true;
 
 void update(){
-y = y + 7;	
+
 }
 void draw(Graphics g){
-	g.fillRect(x, y, width, height);
+
 }
 }
