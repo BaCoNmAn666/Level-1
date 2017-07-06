@@ -5,12 +5,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
-Timer lol;
+
+	Timer lol;
 ObjectManager manager = new ObjectManager();
 Font titleFont;
 Font subtitles;
@@ -20,16 +24,37 @@ final int END_STATE = 2;
 int currentState = MENU_STATE;
 GameObject halp = new GameObject(82, 10, 72, 37);
 Rocketship space = new Rocketship(250, 700, 50, 50, 5);
+public static BufferedImage alienImg;
+public static BufferedImage rocketImg;
+public static BufferedImage bulletImg;
+
 GamePanel(){
 	lol = new Timer(1000/60, this);
 	titleFont = new Font("Arial", Font.PLAIN, 48);
 	subtitles = new Font("Arial", Font.PLAIN, 24);
 	manager.addObject(space);
+	try {
+		alienImg = ImageIO.read(this.getClass().getResourceAsStream("bowser.jpeg"));
+		rocketImg = ImageIO.read(this.getClass().getResourceAsStream("mario.jpeg"));
+		bulletImg = ImageIO.read(this.getClass().getResourceAsStream("shell.jpeg"));
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 }
 void updateMenuState(){
 }
 void updateGameState(){
 	manager.update();
+	manager.manageEnemies();
+	manager.checkCollision();
+	if(space.isAlive == false){
+		currentState = END_STATE;
+		manager.reset();
+		space = new Rocketship(250, 700, 50, 50, 5);
+	manager.addObject(space);
+	}
+manager.getScore();
 }
 void updateEndState(){
 }
@@ -55,7 +80,7 @@ void drawEndState(Graphics g){
 	g.setColor(Color.BLACK);
 	g.drawString("GAME OVER", 110, 100);
 	g.setFont(subtitles);
-	g.drawString("You killed 0 aliens", 160, 300);
+	g.drawString("You killed " + manager.getScore() + " aliens", 160, 300);
 	g.drawString("Press BACKSPACE to restart", 80, 500);
 	
 }
@@ -113,6 +138,9 @@ if(e.getKeyCode() == KeyEvent.VK_LEFT){
 }
 if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
 	currentState = MENU_STATE;
+}
+if(e.getKeyCode() == KeyEvent.VK_SPACE){
+	manager.addObject(new Projectile(space.x, space.y, 10, 10, 10));
 }
 }
 @Override

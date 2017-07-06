@@ -2,17 +2,21 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 public class Projectile extends GameObject{
-
+	int speed = 10;
 	Projectile(int x, int y, int width, int height, int speed) {
 		super(x, y, width, height);
 		// TODO Auto-generated constructor stub
-	speed = 10;
+	
 	}
 	void update(){
-
+super.update(); 
+		y = y - speed;
+	if(y <= 0){
+		isAlive = false;
+	}
+	collisionBox.setBounds(x, y, width, height);
 	}
 	void draw(Graphics g){
-		g.setColor(Color.red);
-		g.fillRect(x, y, 50, 50);
+		g.drawImage(GamePanel.bulletImg, x, y, width, height, null);
 	}
 }

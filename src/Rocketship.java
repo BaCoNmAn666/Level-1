@@ -12,6 +12,7 @@ boolean down = false;
 boolean right = false;
 boolean left = false;
 	void update(){
+super.update();
 if(up){
 	y -= 5;
 }
@@ -24,9 +25,11 @@ if(down){
 	if(left){
 		x -= 5;
 	}
+	
+	collisionBox.setBounds(x, y, width, height);
 	}
 	void draw(Graphics g){
-		g.setColor(Color.BLUE);
-		g.fillRect(x, y, 50, 50);
+		g.drawImage(GamePanel.rocketImg, x, y, width, height, null);
 	}
+	
 }
